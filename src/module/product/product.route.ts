@@ -2,9 +2,11 @@ import express from 'express';
 import { productControllers } from './product.controller';
 
 const router = express.Router();
-
-// router.get('/', (req, res) => {});
+// create a  product
 router.post('/create-product', productControllers.createProduct);
-// router.get('/:id', (req, res) => {});
+
+// get all product
+router.get('/', productControllers.getAllProducts);
+router.get('/:id', productControllers.getSingleProducts);
 
 export const productRoutes = router;

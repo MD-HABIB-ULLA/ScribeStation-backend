@@ -19,4 +19,14 @@ const ProductSchema = new Schema<TProduct>(
   { timestamps: true },
 );
 
+ProductSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
+  next();
+});
+ProductSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } }).select('-isDeleted');
+  next();
+});
+
+
 export const Product = model<TProduct>('Product', ProductSchema);
