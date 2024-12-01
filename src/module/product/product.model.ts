@@ -1,7 +1,8 @@
-import { model, Schema } from "mongoose";
-import { TProduct } from "./product.interface";
+import { model, Schema } from 'mongoose';
+import { TProduct } from './product.interface';
 
-const ProductSchema = new Schema<TProduct>({
+const ProductSchema = new Schema<TProduct>(
+  {
     name: { type: String, required: true },
     brand: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
@@ -11,10 +12,11 @@ const ProductSchema = new Schema<TProduct>({
     inStock: { type: Boolean, required: true },
     isDeleted: {
       type: String,
-      enum: ["true", "false", "archived"],
-      default: "false", // Default value
+      enum: ['true', 'false', 'archived'],
+      default: 'false', // Default value
     },
-  });
+  },
+  { timestamps: true },
+);
 
-
-  export const Product = model<TProduct>("Product", ProductSchema);
+export const Product = model<TProduct>('Product', ProductSchema);
