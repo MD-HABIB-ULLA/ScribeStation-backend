@@ -28,7 +28,6 @@ const formatZodError = (error: z.ZodError) => {
 const createProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body.product;
-    console.log(req.body);
 
     // Validate the product data using Zod
     const zodData = ProductValidationSchema.parse(product);
@@ -43,7 +42,6 @@ const createProduct = async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.log(error);
       res.status(400).json({
         status: false,
         message: 'Validation failed',
@@ -181,7 +179,6 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
 
     // Call the service to soft-delete the product
     const result = await productServices.deleteProductInDB(productId);
-    console.log(result);
 
     if (result === null) {
       res.status(404).json({
@@ -191,7 +188,6 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
       return;
     }
     // Check if the product was actually updated (soft-deleted)
-    console.log(productServices);
     if (!productServices) {
       res.status(404).json({
         status: false,

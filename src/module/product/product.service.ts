@@ -32,7 +32,6 @@ const updateProductInDB = async (id: string, updateData: Partial<TProduct>) => {
 const deleteProductInDB = async (id: string) => {
   // Check if the product exists
   const isExist = await Product.findOne({ _id: id });
-  console.log(isExist);
 
   if (isExist !== null) {
     // Update the product to mark it as deleted
