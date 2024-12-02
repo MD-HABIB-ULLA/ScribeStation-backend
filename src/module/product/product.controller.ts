@@ -151,7 +151,6 @@ const updateProduct = async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     if (error instanceof z.ZodError) {
       // Handle validation errors
-      console.error(error);
       res.status(400).json({
         status: false,
         message: 'Validation failed',
