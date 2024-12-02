@@ -37,7 +37,7 @@ const createProduct = async (req: Request, res: Response) => {
     const result = await productServices.createProductIntoDB(zodData);
 
     res.status(201).json({
-      success: true,
+      status: true,
       message: 'Product created successfully',
       product: result, // Send validated product data
     });
@@ -45,7 +45,7 @@ const createProduct = async (req: Request, res: Response) => {
     if (error instanceof z.ZodError) {
       console.log(error);
       res.status(400).json({
-        success: false,
+        status: false,
         message: 'Validation failed',
         error: {
           name: 'ValidationError',
@@ -59,7 +59,7 @@ const createProduct = async (req: Request, res: Response) => {
           ? error.message
           : 'An unexpected error occurred.';
       res.status(500).json({
-        success: false,
+        status: false,
         message: errorMessage,
         error: {
           name: 'UnexpectedError',
@@ -76,13 +76,13 @@ const getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await productServices.getAllProductsFromDB();
     res.status(200).json({
-      success: true,
+      status: true,
       message: 'Products fetched successfully',
       data: products,
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
+      status: false,
       message: 'An unexpected error occurred',
       error: {
         name: 'UnexpectedError',
@@ -97,7 +97,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getSingleProducts = async (
   req: Request,
   res: Response,
-): Promise<void> => {
+) => {
   try {
     const { productId } = req.params;
 
@@ -114,13 +114,13 @@ const getSingleProducts = async (
     }
 
     res.status(200).json({
-      success: true,
+      status: true,
       message: 'Product fetched successfully',
       data: product,
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
+      status: false,
       message: 'An unexpected error occurred',
       error: error instanceof Error ? error.message : String(error),
     });
@@ -146,7 +146,7 @@ const updateProduct = async (req: Request, res: Response): Promise<void> => {
     }
 
     res.status(200).json({
-      success: true,
+      status: true,
       message: 'Product data updated successfully',
       data: updatedProduct,
     });
@@ -155,7 +155,7 @@ const updateProduct = async (req: Request, res: Response): Promise<void> => {
       // Handle validation errors
       console.error(error);
       res.status(400).json({
-        success: false,
+        status: false,
         message: 'Validation failed',
         error: {
           name: 'ValidationError',
@@ -165,7 +165,7 @@ const updateProduct = async (req: Request, res: Response): Promise<void> => {
       });
     } else {
       res.status(500).json({
-        success: false,
+        status: false,
         message: 'Something went wrong',
         error: error instanceof Error ? error.message : error,
         // eslint-disable-next-line no-undefined
@@ -185,7 +185,7 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
 
     if (result === null) {
       res.status(404).json({
-        success: false,
+        status: false,
         message: 'This product is already deleted',
       });
       return;
@@ -194,7 +194,7 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
     console.log(productServices);
     if (!productServices) {
       res.status(404).json({
-        success: false,
+        status: false,
         message: 'Product not found',
         error: `No product found with id: ${productId}`,
       });
@@ -203,14 +203,14 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
 
     // If the product was successfully soft-deleted
     res.status(200).json({
-      success: true,
+      status: true,
       message: 'Product deleted successfully',
       data: [],
     });
   } catch (error) {
     // Handle unexpected errors
     res.status(500).json({
-      success: false,
+      status: false,
       message: 'An unexpected error occurred',
       error: error instanceof Error ? error.message : error,
     });
