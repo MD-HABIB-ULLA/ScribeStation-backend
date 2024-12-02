@@ -34,12 +34,12 @@ const createProduct = async (req: Request, res: Response) => {
     const zodData = ProductValidationSchema.parse(product);
 
     // If validation passes, save the product into DB
-    await productServices.createProductIntoDB(zodData);
+    const result = await productServices.createProductIntoDB(zodData);
 
     res.status(201).json({
       success: true,
       message: 'Product created successfully',
-      product: zodData, // Send validated product data
+      product: result, // Send validated product data
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -71,14 +71,14 @@ const createProduct = async (req: Request, res: Response) => {
     }
   }
 };
-
+// get all products data from the database
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await productServices.getAllProductsFromDB();
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully',
-      data : products,
+      data: products,
     });
   } catch (error) {
     res.status(500).json({
@@ -93,25 +93,126 @@ const getAllProducts = async (req: Request, res: Response) => {
     });
   }
 };
-const getSingleProducts = async (req: Request, res: Response) => {
+// get single data from database
+const getSingleProducts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
-    const id = req.params.id;
-    const products = await productServices.getSingleProductsFromDB(id);
+    const { productId } = req.params;
+
+    // Assuming some service to get the product
+    const product = await productServices.getSingleProductsFromDB(productId);
+
+    if (!product) {
+      res.status(404).json({
+        success: false,
+        message: 'Product not found',
+        error: `No product found with id: ${productId}`,
+      });
+      return;
+    }
+
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully',
-      data : products,
+      data: product,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: 'An unexpected error occurred',
-      error: {
-        name: 'UnexpectedError',
-        errors: error,
-      },
-      // eslint-disable-next-line no-undefined
-      stack: error instanceof Error ? error.stack : undefined,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+const updateProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { productId } = req.params;
+    const updateData = req.body;
+
+    // Validate the update data using Zod
+    const zodData = ProductValidationSchema.partial().parse(updateData);
+
+    // Proceed with updating the product in the database
+    const updatedProduct = await productServices.updateProductInDB(
+      productId,
+      zodData,
+    );
+
+    if (!updatedProduct) {
+      res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Product data updated successfully',
+      data: updatedProduct,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      // Handle validation errors
+      console.error(error);
+      res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        error: {
+          name: 'ValidationError',
+          errors: formatZodError(error),
+        },
+        stack: error.stack,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Something went wrong',
+        error: error instanceof Error ? error.message : error,
+        // eslint-disable-next-line no-undefined
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+    }
+  }
+};
+
+const deleteProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { productId } = req.params;
+
+    // Call the service to soft-delete the product
+    const result = await productServices.deleteProductInDB(productId);
+    console.log(result);
+
+    if (result === null) {
+      res.status(404).json({
+        success: false,
+        message: 'This product is already deleted',
+      });
+      return;
+    }
+    // Check if the product was actually updated (soft-deleted)
+    console.log(productServices);
+    if (!productServices) {
+      res.status(404).json({
+        success: false,
+        message: 'Product not found',
+        error: `No product found with id: ${productId}`,
+      });
+      return;
+    }
+
+    // If the product was successfully soft-deleted
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully',
+      data: [],
+    });
+  } catch (error) {
+    // Handle unexpected errors
+    res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred',
+      error: error instanceof Error ? error.message : error,
     });
   }
 };
@@ -120,6 +221,8 @@ const getSingleProducts = async (req: Request, res: Response) => {
 
 export const productControllers = {
   createProduct,
+  updateProduct,
   getAllProducts,
-  getSingleProducts
+  getSingleProducts,
+  deleteProduct,
 };

@@ -8,7 +8,7 @@ export const ProductValidationSchema = z.object({
   description: z.string().max(500, "Description cannot exceed 500 characters"),
   quantity: z.number().int().min(0, "Quantity must be a non-negative integer"),
   inStock: z.boolean(),
-  isDeleted: z.enum(["true", "false", "archived"]).optional(), // Optional enum
+  isDeleted: z.boolean().optional(), // Optional enum
 });
 
 

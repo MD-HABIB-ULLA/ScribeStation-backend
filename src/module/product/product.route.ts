@@ -7,6 +7,14 @@ router.post('/create-product', productControllers.createProduct);
 
 // get all product
 router.get('/', productControllers.getAllProducts);
-router.get('/:id', productControllers.getSingleProducts);
+
+// get single product by ID
+router.get('/:productId', productControllers.getSingleProducts);
+
+router.put('/:productId', productControllers.updateProduct)
+
+
+router.delete('/:productId', productControllers.deleteProduct)
+
 
 export const productRoutes = router;
