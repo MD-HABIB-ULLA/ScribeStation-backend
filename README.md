@@ -1,4 +1,4 @@
-# [ScribeStation](https://assainment-2-delta.vercel.app) API Documentation
+# [ScribeStation](https://scribestation.vercel.app/) API Documentation
 
 ## Objective
 
