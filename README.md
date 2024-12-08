@@ -2,7 +2,7 @@
 
 ## Objective
 
-The **Stationery Shop API** is a comprehensive backend solution for managing a stationery store. Built with **Node.js**, **Express**, **TypeScript**, and **MongoDB**, it enables efficient management of products and orders with robust validation and error handling.
+The **Stationery Shop API** is a comprehensive backend solution for managing a stationery store. Built with **Node.js**, **Express**, **TypeScript**, and **MongoDB**, it enables efficient management of products and orders with robust validation and error handling .
 
 ---
 
