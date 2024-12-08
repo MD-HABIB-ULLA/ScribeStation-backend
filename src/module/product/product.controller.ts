@@ -27,7 +27,7 @@ const formatZodError = (error: z.ZodError) => {
 //  create method
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const product = req.body.product;
+    const product = req.body
 
     // Validate the product data using Zod
     const zodData = ProductValidationSchema.parse(product);
