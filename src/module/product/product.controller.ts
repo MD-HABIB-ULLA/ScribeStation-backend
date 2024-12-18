@@ -75,7 +75,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     const products = await productServices.getAllProductsFromDB();
     res.status(200).json({
       status: true,
-      message: 'Products fetched successfully',
+      message: 'Products retrieved successfully',
       data: products,
     });
   } catch (error) {
@@ -113,7 +113,7 @@ const getSingleProducts = async (
 
     res.status(200).json({
       status: true,
-      message: 'Product fetched successfully',
+      message: 'Products retrieved successfully',
       data: product,
     });
   } catch (error) {
