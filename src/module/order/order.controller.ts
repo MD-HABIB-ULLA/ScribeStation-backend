@@ -66,7 +66,7 @@ const allOrders = async (req: Request, res:Response) => {
 
     // Send the success response
     res.status(200).json({
-      message: "Orders fetched successfully",
+      message: "orders retrieved successfully",
       status: true,
       data: orders, // Return all orders
     });
