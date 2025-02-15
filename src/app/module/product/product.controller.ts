@@ -214,7 +214,7 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
 
 // Helper function to format Zod errors
 
-export const productControllers = {
+export const ProductControllers = {
   createProduct,
   updateProduct,
   getAllProducts,

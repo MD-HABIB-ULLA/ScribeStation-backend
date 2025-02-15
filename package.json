@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/server.js",
+    "start": "nodemon ./dist/server.js",
     "dev": "tsc --watch",
     "build": "tsc",
     "lint": "eslint .",
@@ -20,6 +20,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "http-status": "^2.1.0",
+    "http-status-codes": "^2.3.0",
     "mongoose": "^8.8.3",
     "zod": "^3.23.8"
   },
