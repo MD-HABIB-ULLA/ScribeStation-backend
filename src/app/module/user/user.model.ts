@@ -5,6 +5,7 @@ import config from '../../config';
 
 const UserSchema = new Schema<TUser>({
   name: { type: String, required: true },
+  image: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   isActive: { type: Boolean, default: true },
@@ -13,7 +14,6 @@ const UserSchema = new Schema<TUser>({
     type: String,
     enum: ['customer', 'admin'],
     default: 'customer',
-    required: true,
   },
 });
 

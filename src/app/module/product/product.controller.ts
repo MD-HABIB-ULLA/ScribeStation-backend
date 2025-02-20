@@ -19,7 +19,7 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
 
 // get all products data from the database
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const result = await ProductServices.getAllProductsFromDB();
+  const result = await ProductServices.getAllProductsFromDB(req.query);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,

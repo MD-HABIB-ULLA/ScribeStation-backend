@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import AppError from '../../errors/AppError';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { productSearchableFields } from './productConstant';
 
 const createProductIntoDB = async (productData: TProduct) => {
   const product = new Product(productData);
@@ -9,8 +11,14 @@ const createProductIntoDB = async (productData: TProduct) => {
   return result;
 };
 
-const getAllProductsFromDB = async () => {
-  const product = await Product.find();
+const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  console.log(query);
+
+  const productQuery = new QueryBuilder(Product.find(), query)
+    .search(productSearchableFields)
+    .filter()
+    .sort();
+  const product = await productQuery.modelQuery;
   return product;
 };
 const getSingleProductsFromDB = async (id: string) => {
