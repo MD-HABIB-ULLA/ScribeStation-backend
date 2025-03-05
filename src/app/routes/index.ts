@@ -4,7 +4,7 @@ import { ProductRoutes } from '../module/product/product.routes';
 import { OrderRoutes } from '../module/order/order.routes';
 import { UserRoutes } from '../module/user/user.routes';
 import AuthRouter from '../module/auth/auth.routes';
-import uploadRouter from '../module/uplade/upload.routes';
+import { CartRoutes } from '../module/cart/cart.routes';
 
 const router = Router();
 
@@ -26,8 +26,8 @@ const moduleRoutes = [
     route: AuthRouter,
   },
   {
-    path: '/generate-signature',
-    route: uploadRouter,
+    path: '/cart',
+    route: CartRoutes,
   },
 ];
 

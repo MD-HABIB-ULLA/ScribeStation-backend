@@ -5,7 +5,6 @@ import {
   ProductValidationSchema,
   UpdateProductValidationSchema,
 } from './product.validation';
-import auth from '../../middlewares/auth';
 
 const router = express.Router();
 // create a  product
@@ -16,7 +15,7 @@ router.post(
 );
 
 // get all product
-router.get('/', auth('admin'), ProductControllers.getAllProducts);
+router.get('/', ProductControllers.getAllProducts);
 
 // get single product by ID
 router.get('/:productId', ProductControllers.getSingleProducts);

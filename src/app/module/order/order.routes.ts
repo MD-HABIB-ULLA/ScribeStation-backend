@@ -9,6 +9,7 @@ router.post(
   validationRequest(OrderValidationSchema),
   orderController.createOrder,
 );
+router.post('/order-success', orderController.orderSuccess);
 router.get('/', orderController.allOrders);
 router.get('/revenue', orderController.totalRevenue);
 

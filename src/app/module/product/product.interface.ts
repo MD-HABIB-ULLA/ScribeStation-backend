@@ -1,3 +1,4 @@
+
 export interface TProduct {
   name: string;
   brand: string;
@@ -5,6 +6,6 @@ export interface TProduct {
   category: string;
   description: string;
   quantity: number;
-  inStock: boolean;
+  inStock?: boolean;
   isDeleted?: boolean; // Optional field
 }

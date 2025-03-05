@@ -6,7 +6,9 @@ import notFound from './app/middlewares/notFound';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 const app: Application = express();
 
-app.use(express.json({ limit: '20mb' })); // Set JSON request body limit to 20MB
+app.use(express.json()); // Set JSON request body limit to 20MB
+app.use(express.urlencoded({ extended: true }));
+
 
 app.use(
   cors({

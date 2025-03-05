@@ -2,15 +2,25 @@ import { z } from 'zod';
 
 export const OrderValidationSchema = z.object({
   body: z.object({
-    email: z
+    user: z
       .string()
-      .trim() // Trims whitespace from both sides
-      .email('Invalid email address.'),
-    product: z
-      .string()
-      .trim() // Trims whitespace from both sides
-      .min(24, 'Invalid product ID.'),
-    quantity: z.number().int().positive('Quantity must be greater than 0.'),
+      .trim()
+      .min(24, 'Invalid customer ID.') // Ensuring it's a MongoDB ObjectId
+      .max(24, 'Invalid customer ID.'),
+    cartItems: z.array(
+      z.object({
+        productId: z
+        .string()
+        .trim()
+        .min(24, 'Invalid customer ID.') // Ensuring it's a MongoDB ObjectId
+        .max(24, 'Invalid customer ID.'),
+        quantity: z.number().int().positive('Quantity must be greater than 0.'),
+      }),
+    ),
+    status: z
+      .enum(['Pending', 'Paid', 'Cancelled'])
+      .optional()
+      .default('Pending'),
     totalPrice: z.number().positive('Total price must be greater than 0.'),
   }),
 });

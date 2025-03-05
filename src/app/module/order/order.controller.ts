@@ -8,13 +8,24 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
   // Create order
   const result = await orderService.createOrderInDB(req.body);
 
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: 'Order created successfully.',
-    data: result,
-  });
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Order created successfully.',
+      data: result,
+    });
 });
+const orderSuccess = catchAsync(async (req: Request, res: Response) => {
+  console.log("Body:", req);
+  console.log("Query:", req.query);
+  
+  const transactionId = req.body.tran_id || req.query.tran_id;
+  console.log("Transaction ID:", transactionId);
+
+ 
+  await orderService.paymentSuccess(req.body, res);
+});
+
 
 const totalRevenue = catchAsync(async (req: Request, res: Response) => {
   const result = await orderService.calculateTotalRevenue();
@@ -48,4 +59,5 @@ export const orderController = {
   createOrder,
   totalRevenue,
   allOrders,
+  orderSuccess
 };

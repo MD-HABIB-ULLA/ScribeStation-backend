@@ -4,9 +4,11 @@ import jwt from 'jsonwebtoken';
 import { TUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 import config from '../../config';
+import { Cart } from '../cart/cart.model';
 
 const register = async (payload: TUser) => {
   const result = await User.create(payload);
+  await Cart.create({ user: result._id });
   return result;
 };
 
@@ -46,8 +48,7 @@ const login = async (payload: { email: string; password: string }) => {
   });
 
   // remove password from user object
-  const { password, isDeleted, isActive, ...data } =
-    user.toObject();
+  const { password, isDeleted, isActive, ...data } = user.toObject();
 
   return { token, user: data };
 };

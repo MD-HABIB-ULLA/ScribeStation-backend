@@ -1,12 +1,30 @@
-import  { Schema, model } from "mongoose";
-import { TOrder } from "./order.interface";
+import { Schema, model } from "mongoose";
+import { TOrder, CartItem } from "./order.interface";
 
+// Define the CartItem schema
+const CartItemSchema = new Schema<CartItem>({
+  productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  quantity: { type: Number, required: true },
+});
+
+// Define the Order schema
 const OrderSchema = new Schema<TOrder>(
   {
-    email: { type: String, required: true },
-    product: { type: String, required: true },
-    quantity: { type: Number, required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User", // Reference to User model
+      required: [true, "Customer ID is required"],
+    },
+    cartItems: {
+      type: [CartItemSchema], // An array of CartItem objects
+      required: true,
+    },
     totalPrice: { type: Number, required: true },
+    status: {
+      type: String,
+      enum: ["Pending", "Paid", "Cancelled"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );
