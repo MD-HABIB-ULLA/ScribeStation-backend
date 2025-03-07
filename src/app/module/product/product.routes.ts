@@ -5,11 +5,13 @@ import {
   ProductValidationSchema,
   UpdateProductValidationSchema,
 } from './product.validation';
+import roleMiddleware from '../../middlewares/roleMiddleware';
 
 const router = express.Router();
 // create a  product
 router.post(
   '/',
+  roleMiddleware('admin'),
   validationRequest(ProductValidationSchema),
   ProductControllers.createProduct,
 );
@@ -22,10 +24,16 @@ router.get('/:productId', ProductControllers.getSingleProducts);
 
 router.put(
   '/:productId',
+  roleMiddleware('admin'),
+
   validationRequest(UpdateProductValidationSchema),
   ProductControllers.updateProduct,
 );
 
-router.delete('/:productId', ProductControllers.deleteProduct);
+router.delete(
+  '/:productId',
+  roleMiddleware('admin'),
+  ProductControllers.deleteProduct,
+);
 
 export const ProductRoutes = router;

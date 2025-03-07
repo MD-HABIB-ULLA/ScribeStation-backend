@@ -4,8 +4,13 @@ import { TProduct } from './product.interface';
 import { Product } from './product.model';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { productSearchableFields } from './productConstant';
+import { Category } from '../category/category.model';
 
 const createProductIntoDB = async (productData: TProduct) => {
+  const category = await Category.findById(productData.category);
+  if (!category) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Category not found');
+  }
   const product = new Product(productData);
   const result = await Product.create(product);
   return result;
@@ -18,8 +23,12 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
     .search(productSearchableFields)
     .filter()
     .sort();
-  const product = await productQuery.modelQuery;
-  return product;
+  const products = await productQuery.modelQuery.populate({
+    path: 'category',
+    select: 'name image icon description', // Specify only necessary fields
+  });
+
+  return products;
 };
 const getSingleProductsFromDB = async (id: string) => {
   const product = await Product.findById({ _id: id });
