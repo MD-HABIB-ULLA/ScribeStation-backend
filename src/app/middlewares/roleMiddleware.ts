@@ -10,11 +10,11 @@ interface CustomRequest extends Request {
   user?: JwtPayload;
 }
 
-const auth = (...requiredRoles: TUserRole[]) => {
+const roleMiddleware = (...requiredRoles: TUserRole[]) => {
   return catchAsync(
     async (req: CustomRequest, res: Response, next: NextFunction) => {
-      const token = req.headers.authorization;
-      // checking if the token is missing
+      const token = req.header('Authorization')?.split(' ')[1];
+
       if (!token) {
         throw new Error('You are not authorized!');
       }
@@ -48,4 +48,4 @@ const auth = (...requiredRoles: TUserRole[]) => {
   );
 };
 
-export default auth;
+export default roleMiddleware;
